@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  api.product:
+    image: api/product
+    container_name: API.Product
+    hostname: ocelot.product
+    build: 
+        context: .
+        dockerfile: ./API.Product/Dockerfile
+    ports:
+      - "8000:8000"
+    environment: 
+        ASPNETCORE_HTTP_PORTS: "8000"
+        PRODUCT_DB: "Server=ssh.letranglan.top;Database=MS_Product;User Id=sa;Password=785571@Lan;TrustServerCertificate=True"
+        RB_HOST: "rabbitmq.ev"
+        RB_USER: admin
+        RB_PASS: admin
+  
+  api.cart:
+    image: api/cart
+    container_name: API.Cart
+    hostname: ocelot.cart
+    build: 
+        context: .
+        dockerfile: ./API.Cart/Dockerfile
+    ports:
+      - "7000:7000"
+    environment: 
+        ASPNETCORE_HTTP_PORTS: "7000"
+        CART_DB: "Server=ssh.letranglan.top;Database=MS_Cart;User Id=sa;Password=785571@Lan;TrustServerCertificate=True"
+        RB_HOST: "rabbitmq.ev"
+        RB_USER: admin
+        RB_PASS: admin
+
+  api.gateway:
+    image: api/gateway
+    container_name: API.Gateway
+    hostname: ocelot.gateway
+    build: 
+        context: .
+        dockerfile: ./APIGateway/Dockerfile
+    ports:
+      - "8080:8080"
+    links:
+      - api.cart
+      - api.product
+    depends_on:
+      - api.cart
+      - api.product
+    environment: 
+        ASPNETCORE_HTTP_PORTS: "8080"
+
+  webui:
+    image: webui/client
+    container_name: webui.Client
+    hostname: webui.client
+    build: 
+        context: .
+        dockerfile: ./WebUIClient/Dockerfile
+    ports:
+      - "9000:9000"
+    links:
+      - api.gateway
+    environment: 
+        ASPNETCORE_HTTP_PORTS: "9000"
+        API_URL: "http://ocelot.gateway:8080"
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmqEB
+    hostname: rabbitmq.ev
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+ 

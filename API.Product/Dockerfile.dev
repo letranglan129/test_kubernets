@@ -1,0 +1,14 @@
+﻿#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
+WORKDIR /app
+
+# Copy the project files and restore dependencies
+COPY "API.Product.csproj" .
+RUN dotnet restore
+
+# Copy the remaining project files
+COPY . .
+
+# Start the application in watch mode
+CMD ["dotnet", "watch", "run", "--project" , "API.Product.csproj",  "--urls", "https://*:8001;http://*:8000"]
