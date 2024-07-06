@@ -9,6 +9,7 @@ using API.Product.Models;
 using ProductItem = API.Product.Models.Product;
 using MassTransit;
 using EventBus;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Product.Controllers
 {

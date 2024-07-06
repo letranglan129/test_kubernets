@@ -4,7 +4,7 @@ services:
   api.product:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     container_name: API.Product
-    hostname: ocelot.product
+    hostname: api-product-service
     command: ["dotnet", "/app/API.Product.dll", "--urls", "http://*:8000"]
     develop:
       watch: 
@@ -14,8 +14,8 @@ services:
       - "8000:8000"
     environment: 
         ASPNETCORE_HTTP_PORTS: "8000"
-        PRODUCT_DB: "Server=ssh.letranglan.top;Database=MS_Product;User Id=sa;Password=785571@Lan;TrustServerCertificate=True"
-        RB_HOST: "rabbitmq.ev"
+        PRODUCT_DB: "Server=ssh.letranglan.top;Database=MS_Product;User Id=sa;Password=785571Lan;TrustServerCertificate=True"
+        RB_HOST: "rabbitmq-service"
         RB_USER: admin
         RB_PASS: admin
 
@@ -25,7 +25,7 @@ services:
   api.cart:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     container_name: API.Cart
-    hostname: ocelot.cart
+    hostname: api-cart-service
     command: ["dotnet", "/app/API.Cart.dll", "--urls", "http://*:7000"]
     develop:
       watch: 
@@ -35,19 +35,18 @@ services:
       - "7000:7000"
     environment: 
         ASPNETCORE_HTTP_PORTS: "7000"
-        CART_DB: "Server=ssh.letranglan.top;Database=MS_Cart;User Id=sa;Password=785571@Lan;TrustServerCertificate=True"
-        RB_HOST: "rabbitmq.ev"
+        CART_DB: "Server=ssh.letranglan.top;Database=MS_Cart;User Id=sa;Password=785571Lan;TrustServerCertificate=True"
+        RB_HOST: "rabbitmq-service"
         RB_USER: admin
         RB_PASS: admin
     volumes:
       - ./API.Cart/bin/Debug/net8.0:/app
 
-
   api.gateway:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     container_name: API.Gateway
     command: ["dotnet", "/app/APIGateway.dll", "--urls", "http://*:8080"]
-    hostname: ocelot.gateway
+    hostname: api-gateway-service
     develop:
       watch: 
         - path: ./APIGateway/bin/Debug
@@ -69,7 +68,7 @@ services:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     container_name: webui.Client
     command: ["dotnet", "/app/WebUIClient.dll", "--urls", "http://*:9000"]
-    hostname: webui.client
+    hostname: webui-client-service
     develop:
       watch: 
         - path: ./WebUIClient/bin/Debug
@@ -80,7 +79,7 @@ services:
       - api.gateway
     environment: 
         ASPNETCORE_HTTP_PORTS: "9000"
-        API_URL: "http://ocelot.gateway:8080"
+        API_URL: "http://api-gateway-service:8080"
     volumes:
       - ./WebUIClient/bin/Debug/net8.0:/app
       - ./WebUIClient/wwwroot:/wwwroot
@@ -88,7 +87,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmqEB
-    hostname: rabbitmq.ev
+    hostname: rabbitmq-service
     restart: always
     ports:
       - "5672:5672"

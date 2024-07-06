@@ -1,16 +1,16 @@
 using API.Product.Models;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
-
 // Configure the HTTP request pipeline.
-
 var connectionString = System.Environment.GetEnvironmentVariable("PRODUCT_DB");
 var rabbitHost = System.Environment.GetEnvironmentVariable("RB_HOST");
 var rabbitUser = System.Environment.GetEnvironmentVariable("RB_USER");
@@ -42,5 +42,6 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 app.UseHttpsRedirection();
+
 app.MapControllers();
 app.Run();

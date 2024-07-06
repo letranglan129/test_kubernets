@@ -4,7 +4,7 @@ services:
   api.product:
     image: api/product
     container_name: API.Product
-    hostname: ocelot.product
+    hostname: api-product-service
     build: 
         context: .
         dockerfile: ./API.Product/Dockerfile
@@ -12,15 +12,15 @@ services:
       - "8000:8000"
     environment: 
         ASPNETCORE_HTTP_PORTS: "8000"
-        PRODUCT_DB: "Server=ssh.letranglan.top;Database=MS_Product;User Id=sa;Password=785571@Lan;TrustServerCertificate=True"
-        RB_HOST: "rabbitmq.ev"
+        PRODUCT_DB: "Server=ssh.letranglan.top;Database=MS_Product;User Id=sa;Password=785571Lan;TrustServerCertificate=True"
+        RB_HOST: "rabbitmq-service"
         RB_USER: admin
         RB_PASS: admin
   
   api.cart:
     image: api/cart
     container_name: API.Cart
-    hostname: ocelot.cart
+    hostname: api-cart-service
     build: 
         context: .
         dockerfile: ./API.Cart/Dockerfile
@@ -28,15 +28,15 @@ services:
       - "7000:7000"
     environment: 
         ASPNETCORE_HTTP_PORTS: "7000"
-        CART_DB: "Server=ssh.letranglan.top;Database=MS_Cart;User Id=sa;Password=785571@Lan;TrustServerCertificate=True"
-        RB_HOST: "rabbitmq.ev"
+        CART_DB: "Server=ssh.letranglan.top;Database=MS_Cart;User Id=sa;Password=785571Lan;TrustServerCertificate=True"
+        RB_HOST: "rabbitmq-service"
         RB_USER: admin
         RB_PASS: admin
 
   api.gateway:
     image: api/gateway
     container_name: API.Gateway
-    hostname: ocelot.gateway
+    hostname: api-gateway-service
     build: 
         context: .
         dockerfile: ./APIGateway/Dockerfile
@@ -54,7 +54,7 @@ services:
   webui:
     image: webui/client
     container_name: webui.Client
-    hostname: webui.client
+    hostname: webui-client-service
     build: 
         context: .
         dockerfile: ./WebUIClient/Dockerfile
@@ -64,12 +64,12 @@ services:
       - api.gateway
     environment: 
         ASPNETCORE_HTTP_PORTS: "9000"
-        API_URL: "http://ocelot.gateway:8080"
+        API_URL: "http://api-gateway-service:8080"
 
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmqEB
-    hostname: rabbitmq.ev
+    hostname: rabbitmq-service
     restart: always
     ports:
       - "5672:5672"
