@@ -47,8 +47,6 @@ spec:
     - protocol: TCP
       port: 8000
       targetPort: 8000
-  externalIPs:
-    - 192.168.2.92
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,8 +92,6 @@ spec:
     - protocol: TCP
       port: 7000
       targetPort: 7000
-  externalIPs:
-    - 192.168.2.92
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -133,8 +129,6 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  externalIPs:
-    - 192.168.2.92
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -168,14 +162,13 @@ metadata:
   name: webui-client-service
   namespace: my-namespace
 spec:
+  type: NodePort
   selector:
     app: webui-client
   ports:
     - protocol: TCP
       port: 9000
       targetPort: 9000
-  externalIPs:
-    - 192.168.2.92
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -216,5 +209,3 @@ spec:
     - protocol: TCP
       port: 5672
       targetPort: 5672
-  externalIPs:
-    - 192.168.2.92
