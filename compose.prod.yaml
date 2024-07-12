@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   api.product:
-    image: api/product
+    image: letranglan129/api-gateway:v0.1
     container_name: API.Product
     hostname: api-product-service
     build: 
@@ -18,7 +18,7 @@ services:
         RB_PASS: admin
   
   api.cart:
-    image: api/cart
+    image: letranglan129/api-cart:v0.1
     container_name: API.Cart
     hostname: api-cart-service
     build: 
@@ -34,7 +34,7 @@ services:
         RB_PASS: admin
 
   api.gateway:
-    image: api/gateway
+    image: letranglan129/api-gateway:v0.1
     container_name: API.Gateway
     hostname: api-gateway-service
     build: 
@@ -52,7 +52,7 @@ services:
         ASPNETCORE_HTTP_PORTS: "8080"
 
   webui:
-    image: webui/client
+    image: letranglan129/webui-client:v0.1
     container_name: webui.Client
     hostname: webui-client-service
     build: 
