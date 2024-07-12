@@ -7,7 +7,7 @@ services:
     hostname: api-product-service
     build: 
         context: .
-	network: host
+	      network: host
         dockerfile: ./API.Product/Dockerfile
     ports:
       - "8000:8000"
@@ -24,7 +24,7 @@ services:
     hostname: api-cart-service
     build: 
         context: .
-	network: host
+	      network: host
         dockerfile: ./API.Cart/Dockerfile
     ports:
       - "7000:7000"
@@ -41,7 +41,7 @@ services:
     hostname: api-gateway-service
     build: 
         context: .
-	network: host
+	      network: host
         dockerfile: ./APIGateway/Dockerfile
     ports:
       - "8080:8080"
@@ -60,7 +60,7 @@ services:
     hostname: webui-client-service
     build: 
         context: .
-	network: host
+	      network: host
         dockerfile: ./WebUIClient/Dockerfile
     ports:
       - "9000:9000"
